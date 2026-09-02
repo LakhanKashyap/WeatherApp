@@ -15,5 +15,11 @@ namespace WeatherApp.Api.Controllers
         {
             _weatherService = weatherService;
         }
+
+        [HttpGet("open-meteo")]
+        public async Task<string> GetWeatherFromOpenMeteo()
+        {
+            return await _weatherService.GetWeatherFromOpenMeteo();
+        }
     }
 }

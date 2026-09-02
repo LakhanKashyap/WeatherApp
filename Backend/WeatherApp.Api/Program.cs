@@ -9,6 +9,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//Dependency Injection for HTTP Client
+builder.Services.AddHttpClient();
+
 //Dependency Injection for WeatherService
 builder.Services.AddScoped<WeatherService>();
 
@@ -22,7 +25,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.MapControllers();
 app.Run();
 
 
