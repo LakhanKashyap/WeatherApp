@@ -7,7 +7,14 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+// Configure Swagger to include XML documentation from our code comments
+builder.Services.AddSwaggerGen(options =>
+{
+    options.IncludeXmlComments(
+        Path.Combine(
+            AppContext.BaseDirectory,
+            $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml"));
+});
 
 //Dependency Injection for HTTP Client
 builder.Services.AddHttpClient();
