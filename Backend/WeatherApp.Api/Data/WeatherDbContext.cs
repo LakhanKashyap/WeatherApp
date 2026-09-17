@@ -19,7 +19,8 @@ namespace WeatherApp.Api.Data
             //we are not doing this anymore because in future we will add more configuration classes for other entities,
             //for that, we need to apply all the config classes manually, which is repetitive/time taking. T
             //herefore, we will use the 'ApplyConfigurationsFromAssembly' method to automatically apply all the configuration classes in the assembly.
-            //modelBuilder.ApplyConfiguration(new WeatherRecordConfiguration());
+
+            //modelBuilder.ApplyConfiguration(new WeatherRecordConfiguration()); //code that we are not using anymore
 
             //It means "EF Core, go through the assembly where WeatherDbContext is located, find all the entity configuration classes,
             //and automatically apply those configurations to the database model."
