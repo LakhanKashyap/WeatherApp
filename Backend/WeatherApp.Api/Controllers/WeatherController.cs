@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using WeatherApp.Api.DTOs;
 using WeatherApp.Api.Services;
+using WeatherApp.Api.Models;
 
 namespace WeatherApp.Api.Controllers
 {
@@ -25,6 +26,10 @@ namespace WeatherApp.Api.Controllers
         /// <param name="latitude">Latitude between -90 and 90.</param>
         /// <param name="longitude">Longitude between -180 and 180.</param>
         [HttpGet("current")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status502BadGateway)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<WeatherResponse>> GetWeatherFromOpenMeteo(double? latitude, double? longitude)
         {
             //Logging Incoming Request
@@ -59,17 +64,19 @@ namespace WeatherApp.Api.Controllers
                 });
             }
 
-            try
-            {
                 return await _weatherService.GetWeatherFromOpenMeteo(latitude.Value, longitude.Value);
-            }
-            catch (HttpRequestException ex)
-            {
-                _logger.LogWarning(ex, "External weather API request failed.");
-
-                // Return 502 when the external weather API fails
-                return StatusCode(502, ex.Message);
-            }
         }
+
+        /// <summary>
+        /// Gets the Weather Records History
+        /// </summary>
+        [HttpGet("history")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<List<WeatherRecord>>> GetWeatherHistory()
+        {
+            return Ok(await _weatherService.GetWeatherRecordsAsync());
+        }
+
     }
 }
